@@ -21,10 +21,12 @@ cfw_tf_dir="./terraform/provision-cfw"
 # default file used for terraform provider
 linode_credentials_file=~/.config/linode
 
-# hydrate API token if not set
-if [ "$LINODE_API_TOKEN" = "" ] && [ -f $linode_credentials_file ];
+# hydrate API token if not set.  NOTE: it currently expects one token in the file so
+# you might need to change this logic if you are using multiple profiles in your 
+# configuration file
+if [ "$LINODE_TOKEN" = "" ] && [ -f $linode_credentials_file ];
   then
-  export LINODE_API_TOKEN=$(grep "token" $linode_credentials_file | awk '{print $3}')
+  export LINODE_TOKEN=$(grep "token" $linode_credentials_file | awk '{print $3}')
 fi
 
 # destroy cluster when parameter is provided
@@ -34,7 +36,7 @@ if [ "$1" = "destroy" ];
   lke_cloud_firewall_id=$(terraform -chdir=$cfw_tf_dir output -raw lke_cloud_firewall_id)
   terraform -chdir=$lke_tf_dir apply -auto-approve -var "k8s_version=$K8S_VERSION" -destroy
   firewall_delete_result=$(curl -s -s -o /dev/null -w "%{http_code}" -X DELETE "https://api.linode.com/v4/networking/firewalls/$lke_cloud_firewall_id" \
-    -H "Authorization: Bearer $LINODE_API_TOKEN" \
+    -H "Authorization: Bearer $LINODE_TOKEN" \
   )
   if [ $firewall_delete_result == 200 ];
   then

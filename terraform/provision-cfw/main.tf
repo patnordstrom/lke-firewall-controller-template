@@ -11,6 +11,10 @@ resource "helm_release" "cloud_firewall_ctrl" {
   depends_on = [ helm_release.cloud_firewall_crd ]
 }
 
+# I noticed during testing that sometimes the cloud firewall takes
+# several seconds to provision after the controller is deployed so
+# this added sleep is here to ensure the cloud resource is availble
+# to be consumed by the data resource
 resource "time_sleep" "allow_firewall_creation" {
   create_duration = "30s"
   triggers = {
@@ -19,6 +23,9 @@ resource "time_sleep" "allow_firewall_creation" {
   }
 }
 
+# The values resource below is meant to enable a dependency between
+# the controller being deployed and the firewall existing using
+# the sleep task above
 data "linode_firewalls" "lke_cloud_firewall" {
   filter {
     name = "label"
