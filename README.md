@@ -19,5 +19,6 @@ This repo was intentionally kept simple to act as a template or to use as a basi
 
 - `K8S_VERSION` which corresponds to a current supported version of Kubernetes on LKE
 - `linode_credentials_file` which can be changed if your file is hosted elsewhere than the default location that Terraform uses
-
-You could also setup a `terraform.tfvars` file in the `terraform/provision-lke` directory if you wanted to override any default variables provided for the deployment.  This repo wasn’t meant to enable extensive configuration and that is left for those consuming this repo to fork and use for their own projects if desired.  This repo without additional configuration will give you a starting cluster that you can then use to run imperative commands against for experimenting while having a more secure and compliant default set of firewall rules applied.
+- `TF_VAR_FILE` which is the name a tfvars variable file that exists in the root directory of this repo (e.g. same directory as deploy.sh) so that you can override variables in the provision-lke terraform folder.  You will need to create the file and uncomment this field if it doesn't already exist
+- `AUTO_APPROVE_TF_APPLY` controls if you want the deployment to auto approve or not (yes | no)
+- `UPGRADE_TF_PROVIDERS` controls if you want to force the update of the terraform providers on the next run (yes | no)

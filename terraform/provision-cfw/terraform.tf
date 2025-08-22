@@ -6,7 +6,7 @@ terraform {
     }
     linode = {
       source  = "linode/linode"
-      version = "~> 2.23"
+      version = "~> 3.1"
     }
     time = {
       source = "hashicorp/time"
