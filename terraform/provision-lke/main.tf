@@ -6,6 +6,18 @@ resource "linode_lke_cluster" "lke_test_cluster" {
 
   control_plane {
     high_availability = (var.enable_ha_control_plane || var.enable_app_platform)
+
+    dynamic "acl" {
+      for_each = var.enable_control_plane_acl ? [1] : []
+      content {
+        enabled = true
+        addresses {
+          ipv4 = var.control_plane_acl_ipv4_addresses
+          ipv6 = var.control_plane_acl_ipv6_addresses
+        }
+      }
+    }
+
   }
 
   pool {

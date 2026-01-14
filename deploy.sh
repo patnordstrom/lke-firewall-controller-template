@@ -11,10 +11,10 @@ export TF_PLUGIN_CACHE_DIR=$PWD/terraform/terraform-plugin-cache
 
 ### Script Variables ###
 
-K8S_VERSION=1.33
-AUTO_APPROVE_TF_APPLY=no
-UPGRADE_TF_PROVIDERS=no
-#TF_VAR_FILE=terraform.tfvars
+K8S_VERSION=1.34                # if you provide the version in the tfvars file, it will override this value
+AUTO_APPROVE_TF_APPLY=yes       # set to "yes" to skip interactive approval of terraform apply
+UPGRADE_TF_PROVIDERS=no         # set to "yes" to upgrade terraform providers on init 
+TF_VAR_FILE=terraform.tfvars    # if you are using a tfvars file then specify the name here
 
 ### Main Script ###
 
